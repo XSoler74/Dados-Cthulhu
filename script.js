@@ -209,12 +209,12 @@ function updateDerivedStats() {
     const {str, con, siz, pow, dex} = character.attributes;
     
     // Puntos de Vida (HP)
-    character.hp.maximum = Math.floor((con + siz) / 10);
+    character.hp.maximum = 20;
     document.getElementById("hpMax").textContent = character.hp.maximum;
     document.getElementById("hpValue").max = character.hp.maximum;
     
     // Puntos de Magia (MP)
-    character.mp.maximum = Math.floor(pow / 5);
+    character.mp.maximum = 25);
     document.getElementById("mpMax").textContent = character.mp.maximum;
     document.getElementById("mpValue").max = character.mp.maximum;
     
