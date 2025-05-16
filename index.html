@@ -2,30 +2,455 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Call of Cthulhu 7ª Ed. - Ficha y Dados</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CoC 7ª Ed. - Móvil</title>
+    <style>
+        :root {
+            --cthulhu-green: #2a9d8f;
+            --cthulhu-dark-green: #1d4c4a;
+            --cthulhu-red: #e63946;
+            --cthulhu-dark: #1d3557;
+            --cthulhu-light: #f1faee;
+            --section-bg: rgba(42, 157, 143, 0.1);
+            --border-color: rgba(42, 157, 143, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        body.light-mode {
+            background-color: #f0f0f0;
+            color: #333;
+            --section-bg: rgba(42, 157, 143, 0.05);
+            --border-color: rgba(42, 157, 143, 0.2);
+        }
+
+        .container {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--cthulhu-green);
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .cthulhu-text {
+            color: var(--cthulhu-green);
+            font-weight: bold;
+        }
+
+        /* Botones */
+        button {
+            cursor: pointer;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .action-btn {
+            background-color: var(--cthulhu-dark);
+            color: white;
+            margin: 3px;
+        }
+
+        .sheet-toggle {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            z-index: 100;
+            background-color: var(--cthulhu-green);
+            color: white;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+        }
+
+        /* Ficha de personaje */
+        .character-sheet {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 100vh;
+            width: 100%;
+            background-color: #121212;
+            border-right: 2px solid var(--cthulhu-green);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.7);
+            transition: left 0.3s ease;
+            z-index: 99;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .character-sheet.active {
+            left: 0;
+        }
+
+        .sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--cthulhu-green);
+        }
+
+        .sheet-header h2 {
+            color: var(--cthulhu-green);
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .close-btn {
+            background: none;
+            color: var(--cthulhu-red);
+            font-size: 1.2rem;
+            padding: 5px;
+        }
+
+        /* Pestañas */
+        .sheet-tabs {
+            display: flex;
+            margin-bottom: 10px;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(42, 157, 143, 0.2);
+            color: #aaa;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-size: 0.8rem;
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: var(--cthulhu-green);
+            color: white;
+        }
+
+        /* Contenido de pestañas */
+        .tab-content {
+            display: none;
+            padding-bottom: 10px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Secciones */
+        .form-section {
+            background: var(--section-bg);
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-section h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--cthulhu-green);
+            font-size: 0.9rem;
+        }
+
+        /* Formularios */
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--cthulhu-green);
+            font-size: 0.8rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 6px;
+            background-color: #222;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        /* Salud */
+        .health-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .health-stat {
+            background: rgba(29, 53, 87, 0.3);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .health-stat label {
+            display: block;
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-bottom: 3px;
+        }
+
+        .stat-value {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .stat-value input {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            width: 40px;
+            padding: 0;
+            margin-right: 3px;
+            text-align: right;
+        }
+
+        /* Atributos */
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .attribute-card {
+            background: rgba(29, 53, 87, 0.3);
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .attribute-card label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+            color: var(--cthulhu-green);
+        }
+
+        .attribute-value input {
+            width: 45px;
+            padding: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Habilidades */
+        .skills-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skills-filter {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .skills-filter select {
+            flex-grow: 1;
+            padding: 6px;
+            font-size: 0.8rem;
+        }
+
+        .skills-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            margin-bottom: 3px;
+        }
+
+        .skill-item label {
+            flex-grow: 1;
+            font-size: 0.8rem;
+        }
+
+        .skill-item input {
+            width: 40px;
+            padding: 4px;
+            margin: 0 3px;
+        }
+
+        /* Combate */
+        .weapons-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 8px;
+        }
+
+        .weapon-entry {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px;
+            margin-bottom: 5px;
+        }
+
+        .weapon-info {
+            flex-grow: 1;
+        }
+
+        .weapon-info input[type="text"] {
+            width: 100%;
+            padding: 4px;
+            margin-bottom: 3px;
+            font-size: 0.8rem;
+        }
+
+        .weapon-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .weapon-stats > div {
+            display: flex;
+            align-items: center;
+        }
+
+        .weapon-stats input {
+            width: 35px;
+            padding: 3px;
+        }
+
+        /* Dados */
+        .dice-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .dice-btn {
+            background: linear-gradient(145deg, #1d3557, #457b9d);
+            color: white;
+            padding: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Prueba de habilidad */
+        .skill-check {
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .skill-input {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .skill-input select {
+            flex-grow: 1;
+            padding: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Resultados */
+        .result-box {
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Historial */
+        .history {
+            padding: 10px;
+        }
+
+        .history ul {
+            max-height: 100px;
+            overflow-y: auto;
+            font-size: 0.8rem;
+        }
+
+        /* Pie de ficha */
+        .sheet-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+
+        .sheet-footer .action-btn {
+            flex: 1;
+            margin: 0 3px;
+            padding: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* Iconos */
+        i {
+            font-size: 0.9rem;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" href="cthulhu-icon.png" type="image/png">
 </head>
 <body class="dark-mode">
     <!-- Botón ficha -->
     <button id="toggleSheet" class="sheet-toggle">
-        <i class="fas fa-scroll"></i> Ficha 7ª Ed.
+        <i class="fas fa-scroll"></i> Ficha
     </button>
 
     <!-- Ficha de personaje -->
     <div id="characterSheet" class="character-sheet">
         <div class="sheet-header">
-            <h2><i class="fas fa-user"></i> INVESTIGADOR DE CTHULHU 7ª ED.</h2>
+            <h2><i class="fas fa-user"></i> INVESTIGADOR</h2>
             <button id="closeSheet" class="close-btn"><i class="fas fa-times"></i></button>
         </div>
         
         <!-- Pestañas principales -->
         <div class="sheet-tabs">
             <button class="tab-btn active" data-tab="basic"><i class="fas fa-id-card"></i> Básico</button>
-            <button class="tab-btn" data-tab="stats"><i class="fas fa-chart-line"></i> Atributos</button>
+            <button class="tab-btn" data-tab="stats"><i class="fas fa-chart-line"></i> Stats</button>
             <button class="tab-btn" data-tab="skills"><i class="fas fa-list-check"></i> Habilidades</button>
             <button class="tab-btn" data-tab="combat"><i class="fas fa-swords"></i> Combate</button>
         </div>
@@ -33,31 +458,19 @@
         <!-- Contenido de pestañas -->
         <div class="tab-content active" id="basicTab">
             <div class="form-section">
-                <h3><i class="fas fa-info-circle"></i> Información Personal</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="charName"><i class="fas fa-signature"></i> Nombre:</label>
-                        <input type="text" id="charName" placeholder="Nombre del investigador">
-                    </div>
-                    <div class="form-group">
-                        <label for="charOccupation"><i class="fas fa-briefcase"></i> Ocupación:</label>
-                        <input type="text" id="charOccupation" placeholder="Profesión">
-                    </div>
+                <h3><i class="fas fa-info-circle"></i> Información</h3>
+                <div class="form-group">
+                    <label for="charName"><i class="fas fa-signature"></i> Nombre:</label>
+                    <input type="text" id="charName" placeholder="Nombre">
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="charAge"><i class="fas fa-birthday-cake"></i> Edad:</label>
-                        <input type="number" id="charAge" value="30">
-                    </div>
-                    <div class="form-group">
-                        <label for="charGender"><i class="fas fa-venus-mars"></i> Género:</label>
-                        <input type="text" id="charGender" placeholder="Género">
-                    </div>
+                <div class="form-group">
+                    <label for="charOccupation"><i class="fas fa-briefcase"></i> Ocupación:</label>
+                    <input type="text" id="charOccupation" placeholder="Profesión">
                 </div>
             </div>
 
             <div class="form-section">
-                <h3><i class="fas fa-heart-pulse"></i> Salud Mental y Física</h3>
+                <h3><i class="fas fa-heart-pulse"></i> Salud</h3>
                 <div class="health-grid">
                     <div class="health-stat">
                         <label>Cordura</label>
@@ -67,14 +480,14 @@
                         </div>
                     </div>
                     <div class="health-stat">
-                        <label>Puntos de Vida</label>
+                        <label>P. Vida</label>
                         <div class="stat-value">
                             <input type="number" id="hpValue" value="10" min="0">
                             <span>/ <span id="hpMax">20</span></span>
                         </div>
                     </div>
                     <div class="health-stat">
-                        <label>Puntos de Magia</label>
+                        <label>P. Magia</label>
                         <div class="stat-value">
                             <input type="number" id="mpValue" value="10" min="0">
                             <span>/ <span id="mpMax">25</span></span>
@@ -150,37 +563,17 @@
                     </div>
                 </div>
             </div>
-
-            <div class="derived-stats">
-                <h3><i class="fas fa-calculator"></i> Estadísticas Derivadas</h3>
-                <div class="derived-grid">
-                    <div class="derived-stat">
-                        <label>Daño Cuerpo a Cuerpo</label>
-                        <span id="dbValue">0</span>
-                    </div>
-                    <div class="derived-stat">
-                        <label>Movimiento</label>
-                        <span id="movementValue">7</span>
-                    </div>
-                    <div class="derived-stat">
-                        <label>Encuentros Míticos</label>
-                        <span id="mythosEncounters">0</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="tab-content" id="skillsTab">
             <div class="skills-section">
                 <div class="skills-filter">
                     <select id="skillsFilter">
-                        <option value="all">Todas las habilidades</option>
+                        <option value="all">Todas</option>
                         <option value="occupational">Ocupacionales</option>
                         <option value="personal">Personales</option>
-                        <option value="combat">Combate</option>
-                        <option value="academic">Académicas</option>
                     </select>
-                    <button id="addSkillBtn"><i class="fas fa-plus"></i> Añadir</button>
+                    <button id="addSkillBtn"><i class="fas fa-plus"></i></button>
                 </div>
                 
                 <div class="skills-list" id="skillsList">
@@ -190,47 +583,27 @@
         </div>
 
         <div class="tab-content" id="combatTab">
-            <div class="combat-section">
+            <div class="form-section">
                 <h3><i class="fas fa-gun"></i> Armas</h3>
                 <div class="weapons-list" id="weaponsList">
-                    <div class="weapon-entry">
-                        <div class="weapon-info">
-                            <input type="text" placeholder="Nombre del arma" value="Pistola .32">
-                            <div class="weapon-stats">
-                                <div>
-                                    <label>Habilidad</label>
-                                    <input type="number" value="25">
-                                    <span>%</span>
-                                </div>
-                                <div>
-                                    <label>Daño</label>
-                                    <input type="text" value="1D10">
-                                </div>
-                                <div>
-                                    <label>Alcance</label>
-                                    <input type="text" value="15m">
-                                </div>
-                            </div>
-                        </div>
-                        <button class="delete-btn"><i class="fas fa-trash"></i></button>
-                    </div>
+                    <!-- Las armas se generarán dinámicamente -->
                 </div>
                 <button id="addWeaponBtn" class="action-btn"><i class="fas fa-plus"></i> Añadir Arma</button>
             </div>
         </div>
 
         <div class="sheet-footer">
-            <button id="saveSheet" class="action-btn"><i class="fas fa-save"></i> Guardar</button>
-            <button id="exportSheet" class="action-btn"><i class="fas fa-file-export"></i> Exportar</button>
-            <button id="importSheet" class="action-btn"><i class="fas fa-file-import"></i> Importar</button>
+            <button id="saveSheet" class="action-btn"><i class="fas fa-save"></i></button>
+            <button id="exportSheet" class="action-btn"><i class="fas fa-file-export"></i></button>
+            <button id="importSheet" class="action-btn"><i class="fas fa-file-import"></i></button>
         </div>
     </div>
 
-    <!-- Contenedor principal de dados -->
+    <!-- Contenedor principal -->
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-dice-d20"></i> <span class="cthulhu-text">CALL OF CTHULHU 7ª ED.</span> <i class="fas fa-tentacle"></i></h1>
-            <button id="themeToggle"><i class="fas fa-moon"></i> Claro/Oscuro</button>
+            <h1><i class="fas fa-dice-d20"></i> <span class="cthulhu-text">CALL OF CTHULHU</span></h1>
+            <button id="themeToggle"><i class="fas fa-moon"></i></button>
         </div>
         
         <!-- Selector de dados -->
@@ -245,26 +618,25 @@
         </div>
 
         <!-- Prueba de habilidad -->
-        <div class="skill-check">
+        <div class="form-section">
             <h3><i class="fas fa-search"></i> Prueba de Habilidad</h3>
             <div class="skill-input">
                 <select id="skillSelect">
-                    <option value="">Seleccionar habilidad...</option>
+                    <option value="">Seleccionar...</option>
                 </select>
-                <span>%</span>
-                <button onclick="rollSkill()" class="action-btn"><i class="fas fa-dice"></i> Lanzar</button>
+                <button onclick="rollSkill()" class="action-btn"><i class="fas fa-dice"></i></button>
             </div>
-            <p id="skillResult" class="result-text"></p>
+            <p id="skillResult" style="margin-top: 8px;"></p>
         </div>
 
         <!-- Resultados -->
-        <div class="result-box animate__animated" id="resultBox">
-            <p id="diceResult"><i class="fas fa-dice"></i> Esperando tirada...</p>
-            <div class="dice-icon" id="diceIcon"><i class="fas fa-dice-d20"></i></div>
+        <div class="form-section">
+            <h3><i class="fas fa-dice"></i> Resultado</h3>
+            <p id="diceResult">Esperando tirada...</p>
         </div>
 
         <!-- Historial -->
-        <div class="history">
+        <div class="form-section">
             <h3><i class="fas fa-history"></i> Historial</h3>
             <ul id="historyList"></ul>
             <button onclick="clearHistory()" class="action-btn"><i class="fas fa-trash"></i> Limpiar</button>
@@ -274,11 +646,407 @@
     <!-- Input oculto para importar -->
     <input type="file" id="fileInput" accept=".json" style="display: none;">
 
-    <!-- Sonidos -->
-    <audio id="diceSound" src="dice-roll.mp3" preload="auto"></audio>
-    <audio id="successSound" src="success.mp3" preload="auto"></audio>
-    <audio id="failSound" src="fail.mp3" preload="auto"></audio>
+    <script>
+        // Datos de la 7ª edición (versión simplificada)
+        const SKILLS_7TH = {
+            "Armas de Fuego": {base: 20, type: "occupational"},
+            "Biblioteca": {base: 20, type: "occupational"},
+            "Conducir Automóvil": {base: 20, type: "occupational"},
+            "Medicina": {base: 1, type: "occupational"},
+            "Ocultismo": {base: 5, type: "occupational"},
+            "Eludir": {base: 30, type: "personal"},
+            "Escuchar": {base: 20, type: "personal"},
+            "Esquivar": {base: 30, type: "personal"},
+            "Persuasión": {base: 10, type: "personal"},
+            "Psicología": {base: 10, type: "personal"},
+            "Sigilo": {base: 20, type: "personal"},
+            "Armas Blancas": {base: 20, type: "combat"},
+            "Lucha": {base: 50, type: "combat"}
+        };
 
-    <script src="script.js"></script>
+        // Variables globales
+        let character = {
+            info: {
+                name: "",
+                occupation: "",
+                age: 30
+            },
+            attributes: {
+                str: 50,
+                con: 50,
+                siz: 50,
+                dex: 50,
+                app: 50,
+                int: 50,
+                pow: 50,
+                edu: 50
+            },
+            skills: {},
+            weapons: [],
+            sanity: {
+                current: 50,
+                maximum: 99
+            },
+            hp: {
+                current: 10,
+                maximum: 20
+            },
+            mp: {
+                current: 10,
+                maximum: 25
+            },
+            luck: 50
+        };
+
+        // Funciones principales
+        function init() {
+            loadCharacter();
+            setupEventListeners();
+            renderSkills();
+            renderWeapons();
+            populateSkillSelect();
+            updateCharacterInfo();
+        }
+
+        function populateSkillSelect() {
+            const skillSelect = document.getElementById("skillSelect");
+            
+            // Limpiar opciones existentes
+            while (skillSelect.options.length > 1) {
+                skillSelect.remove(1);
+            }
+            
+            // Agregar habilidades
+            Object.keys(SKILLS_7TH).sort().forEach(skill => {
+                const option = document.createElement("option");
+                option.value = skill;
+                option.textContent = `${skill} (${SKILLS_7TH[skill].base}%)`;
+                skillSelect.appendChild(option);
+            });
+        }
+
+        function rollDice(sides) {
+            const result = Math.floor(Math.random() * sides) + 1;
+            document.getElementById("diceResult").textContent = `Resultado: ${result}`;
+            addToHistory(`D${sides}: ${result}`);
+            return result;
+        }
+
+        function rollSkill() {
+            const skillSelect = document.getElementById("skillSelect");
+            const selectedSkill = skillSelect.value;
+            const skillValue = character.skills[selectedSkill] || SKILLS_7TH[selectedSkill]?.base || 0;
+            
+            if (!selectedSkill || skillValue === 0) {
+                alert("Selecciona una habilidad válida");
+                return;
+            }
+            
+            const roll = rollDice(100);
+            const resultText = document.getElementById("skillResult");
+            
+            if (roll <= skillValue / 5) {
+                resultText.textContent = `¡Éxito crítico! (${roll} ≤ ${Math.floor(skillValue / 5)})`;
+                resultText.style.color = "var(--cthulhu-green)";
+            } else if (roll <= skillValue) {
+                resultText.textContent = `¡Éxito! (${roll} ≤ ${skillValue})`;
+                resultText.style.color = "";
+            } else if (roll >= 96) {
+                resultText.textContent = `¡Fallo crítico! (${roll} ≥ 96)`;
+                resultText.style.color = "var(--cthulhu-red)";
+            } else {
+                resultText.textContent = `Fallo (${roll} > ${skillValue})`;
+                resultText.style.color = "";
+            }
+            
+            addToHistory(`${selectedSkill}: ${roll}/${skillValue}`);
+        }
+
+        // Funciones de ficha de personaje
+        function updateCharacterInfo() {
+            document.getElementById("charName").value = character.info.name;
+            document.getElementById("charOccupation").value = character.info.occupation;
+            document.getElementById("sanityValue").value = character.sanity.current;
+            document.getElementById("hpValue").value = character.hp.current;
+            document.getElementById("mpValue").value = character.mp.current;
+            document.getElementById("luckValue").value = character.luck;
+            
+            // Atributos
+            document.getElementById("strValue").value = character.attributes.str;
+            document.getElementById("conValue").value = character.attributes.con;
+            document.getElementById("sizValue").value = character.attributes.siz;
+            document.getElementById("dexValue").value = character.attributes.dex;
+            document.getElementById("appValue").value = character.attributes.app;
+            document.getElementById("intValue").value = character.attributes.int;
+            document.getElementById("powValue").value = character.attributes.pow;
+            document.getElementById("eduValue").value = character.attributes.edu;
+        }
+
+        function renderSkills() {
+            const skillsList = document.getElementById("skillsList");
+            skillsList.innerHTML = "";
+            
+            Object.keys(character.skills).sort().forEach(skill => {
+                const skillItem = document.createElement("div");
+                skillItem.className = "skill-item";
+                
+                skillItem.innerHTML = `
+                    <label>${skill}</label>
+                    <input type="number" value="${character.skills[skill]}" data-skill="${skill}">
+                    <span>%</span>
+                    <button class="delete-skill" data-skill="${skill}"><i class="fas fa-trash"></i></button>
+                `;
+                
+                skillsList.appendChild(skillItem);
+            });
+            
+            // Event listeners para inputs
+            document.querySelectorAll(".skill-item input").forEach(input => {
+                input.addEventListener("change", function() {
+                    const skill = this.dataset.skill;
+                    character.skills[skill] = parseInt(this.value) || 0;
+                    saveCharacter();
+                });
+            });
+            
+            // Event listeners para botones de eliminar
+            document.querySelectorAll(".delete-skill").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const skill = this.dataset.skill;
+                    delete character.skills[skill];
+                    renderSkills();
+                    saveCharacter();
+                });
+            });
+            
+            // Filtro de habilidades
+            document.getElementById("skillsFilter").addEventListener("change", function() {
+                const filter = this.value;
+                document.querySelectorAll(".skill-item").forEach(item => {
+                    if (filter === "all") {
+                        item.style.display = "flex";
+                    } else {
+                        const skillType = SKILLS_7TH[item.querySelector("label").textContent]?.type || "";
+                        item.style.display = skillType === filter ? "flex" : "none";
+                    }
+                });
+            });
+            
+            // Botón para añadir habilidades
+            document.getElementById("addSkillBtn").addEventListener("click", function() {
+                const skillName = prompt("Nombre de la habilidad:");
+                if (skillName && !character.skills[skillName]) {
+                    character.skills[skillName] = 0;
+                    renderSkills();
+                    saveCharacter();
+                }
+            });
+        }
+
+        function renderWeapons() {
+            const weaponsList = document.getElementById("weaponsList");
+            weaponsList.innerHTML = "";
+            
+            character.weapons.forEach((weapon, index) => {
+                const weaponEntry = document.createElement("div");
+                weaponEntry.className = "weapon-entry";
+                
+                weaponEntry.innerHTML = `
+                    <div class="weapon-info">
+                        <input type="text" placeholder="Arma" value="${weapon.name}" data-index="${index}" data-field="name">
+                        <div class="weapon-stats">
+                            <div>
+                                <label>Hab.</label>
+                                <input type="number" value="${weapon.skill}" data-index="${index}" data-field="skill">
+                                <span>%</span>
+                            </div>
+                            <div>
+                                <label>Daño</label>
+                                <input type="text" value="${weapon.damage}" data-index="${index}" data-field="damage">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="delete-btn" data-index="${index}"><i class="fas fa-trash"></i></button>
+                `;
+                
+                weaponsList.appendChild(weaponEntry);
+            });
+            
+            // Event listeners para inputs
+            document.querySelectorAll(".weapon-info input").forEach(input => {
+                input.addEventListener("change", function() {
+                    const index = parseInt(this.dataset.index);
+                    const field = this.dataset.field;
+                    character.weapons[index][field] = this.value;
+                    saveCharacter();
+                });
+            });
+            
+            // Event listeners para botones de eliminar
+            document.querySelectorAll(".delete-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const index = parseInt(this.dataset.index);
+                    character.weapons.splice(index, 1);
+                    renderWeapons();
+                    saveCharacter();
+                });
+            });
+            
+            // Botón para añadir armas
+            document.getElementById("addWeaponBtn").addEventListener("click", function() {
+                character.weapons.push({
+                    name: "Nueva arma",
+                    skill: 0,
+                    damage: "1D6"
+                });
+                renderWeapons();
+                saveCharacter();
+            });
+        }
+
+        // Importar/Exportar
+        function exportCharacter() {
+            const data = JSON.stringify(character, null, 2);
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CoC_${character.info.name || 'Personaje'}.json`;
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            addToHistory('Personaje exportado');
+        }
+
+        function importCharacter(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    character = JSON.parse(e.target.result);
+                    updateCharacterInfo();
+                    renderSkills();
+                    renderWeapons();
+                    saveCharacter();
+                    alert('Personaje importado!');
+                    addToHistory(`Importado: ${file.name}`);
+                } catch (error) {
+                    alert('Error al importar');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Historial
+        function addToHistory(entry) {
+            const historyList = document.getElementById("historyList");
+            const li = document.createElement("li");
+            li.textContent = entry;
+            historyList.prepend(li);
+            
+            if (historyList.children.length > 10) {
+                historyList.removeChild(historyList.lastChild);
+            }
+        }
+
+        function clearHistory() {
+            document.getElementById("historyList").innerHTML = "";
+        }
+
+        // Guardado y carga
+        function saveCharacter() {
+            character.info.name = document.getElementById("charName").value;
+            character.info.occupation = document.getElementById("charOccupation").value;
+            
+            character.sanity.current = parseInt(document.getElementById("sanityValue").value) || 0;
+            character.hp.current = parseInt(document.getElementById("hpValue").value) || 0;
+            character.mp.current = parseInt(document.getElementById("mpValue").value) || 0;
+            character.luck = parseInt(document.getElementById("luckValue").value) || 50;
+            
+            character.attributes.str = parseInt(document.getElementById("strValue").value) || 50;
+            character.attributes.con = parseInt(document.getElementById("conValue").value) || 50;
+            character.attributes.siz = parseInt(document.getElementById("sizValue").value) || 50;
+            character.attributes.dex = parseInt(document.getElementById("dexValue").value) || 50;
+            character.attributes.app = parseInt(document.getElementById("appValue").value) || 50;
+            character.attributes.int = parseInt(document.getElementById("intValue").value) || 50;
+            character.attributes.pow = parseInt(document.getElementById("powValue").value) || 50;
+            character.attributes.edu = parseInt(document.getElementById("eduValue").value) || 50;
+            
+            localStorage.setItem("coc7e_character", JSON.stringify(character));
+        }
+
+        function loadCharacter() {
+            const saved = localStorage.getItem("coc7e_character");
+            if (saved) {
+                try {
+                    character = JSON.parse(saved);
+                    addToHistory('Personaje cargado');
+                } catch (error) {
+                    console.error("Error al cargar:", error);
+                }
+            }
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+            document.getElementById("saveSheet").addEventListener("click", saveCharacter);
+            document.getElementById("closeSheet").addEventListener("click", toggleSheet);
+            document.getElementById("toggleSheet").addEventListener("click", toggleSheet);
+            
+            document.getElementById("exportSheet").addEventListener("click", exportCharacter);
+            document.getElementById("importSheet").addEventListener("click", function() {
+                document.getElementById("fileInput").click();
+            });
+            document.getElementById("fileInput").addEventListener("change", importCharacter);
+            
+            // Pestañas
+            document.querySelectorAll(".tab-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const tabId = btn.getAttribute("data-tab");
+                    switchTab(tabId);
+                });
+            });
+        }
+
+        function toggleSheet() {
+            document.getElementById("characterSheet").classList.toggle("active");
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll(".tab-content").forEach(tab => {
+                tab.classList.remove("active");
+            });
+            
+            document.querySelectorAll(".tab-btn").forEach(btn => {
+                btn.classList.remove("active");
+            });
+            
+            document.getElementById(`${tabId}Tab`).classList.add("active");
+            document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add("active");
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("light-mode");
+            const icon = document.querySelector("#themeToggle i");
+            if (document.body.classList.contains("light-mode")) {
+                icon.classList.replace("fa-moon", "fa-sun");
+            } else {
+                icon.classList.replace("fa-sun", "fa-moon");
+            }
+        }
+
+        // Iniciar
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
 </body>
 </html>
