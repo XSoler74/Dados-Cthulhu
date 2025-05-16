@@ -91,11 +91,11 @@ let character = {
     },
     hp: {
         current: 10,
-        maximum: 10
+        maximum: 20
     },
     mp: {
         current: 10,
-        maximum: 10
+        maximum: 25
     },
     luck: 50
 };
@@ -109,9 +109,37 @@ function init() {
     setupEventListeners();
     renderSkills();
     renderWeapons();
+    populateSkillSelect();
     updateDerivedStats();
     updateCharacterInfo();
     console.log("Aplicación inicializada correctamente");
+}
+
+function populateSkillSelect() {
+    const skillSelect = document.getElementById("skillSelect");
+    
+    // Limpiar opciones existentes (excepto la primera)
+    while (skillSelect.options.length > 1) {
+        skillSelect.remove(1);
+    }
+    
+    // Agregar habilidades del personaje primero
+    Object.keys(character.skills).sort().forEach(skill => {
+        const option = document.createElement("option");
+        option.value = skill;
+        option.textContent = `${skill} (${character.skills[skill]}%)`;
+        skillSelect.appendChild(option);
+    });
+    
+    // Agregar habilidades base que no estén ya en el personaje
+    Object.keys(SKILLS_7TH).sort().forEach(skill => {
+        if (!character.skills[skill]) {
+            const option = document.createElement("option");
+            option.value = skill;
+            option.textContent = `${skill} (${SKILLS_7TH[skill].base}%)`;
+            skillSelect.appendChild(option);
+        }
+    });
 }
 
 function rollDice(sides) {
@@ -278,6 +306,7 @@ function renderSkills() {
             const skill = this.dataset.skill;
             const value = parseInt(this.value) || 0;
             character.skills[skill] = value;
+            populateSkillSelect();
             saveCharacter();
         });
     });
@@ -288,6 +317,7 @@ function renderSkills() {
             const skill = this.dataset.skill;
             delete character.skills[skill];
             renderSkills();
+            populateSkillSelect();
             saveCharacter();
         });
     });
@@ -315,6 +345,7 @@ function renderSkills() {
             if (skillName && !character.skills[skillName]) {
                 character.skills[skillName] = 0;
                 renderSkills();
+                populateSkillSelect();
                 saveCharacter();
             } else if (skillName) {
                 alert("¡Ya tienes esa habilidad!");
@@ -465,6 +496,7 @@ function importCharacter(event) {
             updateDerivedStats();
             renderSkills();
             renderWeapons();
+            populateSkillSelect();
             
             // Guarda automáticamente
             saveCharacter();

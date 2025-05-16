@@ -279,11 +279,13 @@ button {
     width: 50px;
     padding: 0;
     margin-right: 5px;
+    text-align: right;
 }
 
 .stat-value span {
     color: #777;
     font-size: 0.9rem;
+    margin-left: 5px;
 }
 
 /* Atributos */
