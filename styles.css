@@ -1,0 +1,668 @@
+/* Estilos base */
+:root {
+    --cthulhu-green: #2a9d8f;
+    --cthulhu-dark-green: #1d4c4a;
+    --cthulhu-red: #e63946;
+    --cthulhu-dark: #1d3557;
+    --cthulhu-light: #f1faee;
+    --section-bg: rgba(42, 157, 143, 0.1);
+    --border-color: rgba(42, 157, 143, 0.3);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+body.light-mode {
+    background-color: #f0f0f0;
+    color: #333;
+    --section-bg: rgba(42, 157, 143, 0.05);
+    --border-color: rgba(42, 157, 143, 0.2);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.cthulhu-text {
+    color: var(--cthulhu-green);
+    font-weight: bold;
+}
+
+/* Botones */
+button {
+    cursor: pointer;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.action-btn {
+    background-color: var(--cthulhu-dark);
+    color: white;
+    margin: 5px;
+}
+
+.action-btn:hover {
+    background-color: #14213d;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.sheet-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background-color: var(--cthulhu-green);
+    color: white;
+}
+
+.close-btn {
+    background: none;
+    color: var(--cthulhu-red);
+    font-size: 20px;
+}
+
+/* Iconos en botones */
+.action-btn i {
+    margin-right: 5px;
+}
+
+/* Ficha de personaje - Rediseño */
+.character-sheet {
+    position: fixed;
+    top: 0;
+    left: -450px;
+    height: 100vh;
+    width: 420px;
+    background-color: #121212;
+    border-right: 3px solid var(--cthulhu-green);
+    box-shadow: 2px 0 15px rgba(0,0,0,0.7);
+    transition: left 0.3s ease;
+    z-index: 99;
+    overflow-y: auto;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.character-sheet.active {
+    left: 0;
+}
+
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--cthulhu-green);
+}
+
+.sheet-header h2 {
+    color: var(--cthulhu-green);
+    margin: 0;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-btn {
+    background: none;
+    color: var(--cthulhu-red);
+    font-size: 1.5rem;
+    padding: 5px;
+}
+
+/* Pestañas */
+.sheet-tabs {
+    display: flex;
+    margin-bottom: 15px;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: rgba(42, 157, 143, 0.2);
+    color: #aaa;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: var(--cthulhu-green);
+    color: white;
+}
+
+.tab-btn i {
+    font-size: 0.9rem;
+}
+
+/* Contenido de pestañas */
+.tab-content {
+    display: none;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 15px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Secciones */
+.form-section {
+    background: var(--section-bg);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.form-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--cthulhu-green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+}
+
+.form-section h3 i {
+    font-size: 1rem;
+}
+
+/* Formularios */
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--cthulhu-green);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.form-group label i {
+    font-size: 0.8rem;
+    width: 16px;
+    text-align: center;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    background-color: #222;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--cthulhu-green);
+}
+
+/* Salud */
+.health-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.health-stat {
+    background: rgba(29, 53, 87, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.health-stat label {
+    display: block;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.stat-value input {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    width: 50px;
+    padding: 0;
+    margin-right: 5px;
+}
+
+.stat-value span {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Atributos */
+.attributes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.attribute-card {
+    background: rgba(29, 53, 87, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.attribute-card label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: var(--cthulhu-green);
+}
+
+.attribute-value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.attribute-value input {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #333;
+    color: white;
+    width: 50px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Estadísticas derivadas */
+.derived-stats {
+    background: var(--section-bg);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.derived-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.derived-stat {
+    background: rgba(29, 53, 87, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.derived-stat label {
+    display: block;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.derived-stat span {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Habilidades */
+.skills-section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.skills-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.skills-filter select {
+    flex-grow: 1;
+    background: #222;
+    border: 1px solid #333;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.skills-filter button {
+    background: var(--cthulhu-green);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0 15px;
+}
+
+.skills-list {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    background: rgba(29, 53, 87, 0.2);
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.skill-item label {
+    flex-grow: 1;
+    font-size: 0.9rem;
+}
+
+.skill-item input {
+    width: 50px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #333;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+.skill-item span {
+    font-size: 0.8rem;
+    color: #777;
+    width: 20px;
+}
+
+.skill-item button {
+    background: none;
+    color: #777;
+    border: none;
+    padding: 5px;
+}
+
+/* Combate */
+.weapons-list {
+    margin-bottom: 10px;
+}
+
+.weapon-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(29, 53, 87, 0.2);
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.weapon-info {
+    flex-grow: 1;
+}
+
+.weapon-info input[type="text"] {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #333;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.weapon-stats {
+    display: flex;
+    gap: 10px;
+}
+
+.weapon-stats > div {
+    display: flex;
+    align-items: center;
+}
+
+.weapon-stats label {
+    font-size: 0.7rem;
+    color: #777;
+    margin-right: 5px;
+}
+
+.weapon-stats input {
+    width: 40px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #333;
+    color: white;
+    text-align: center;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.weapon-stats span {
+    font-size: 0.8rem;
+    color: #777;
+    margin-left: 3px;
+}
+
+.delete-btn {
+    background: none;
+    color: #777;
+    border: none;
+    padding: 5px;
+}
+
+/* Pie de ficha */
+.sheet-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+.sheet-footer .action-btn {
+    flex: 1;
+    margin: 0 5px;
+    padding: 8px;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .character-sheet {
+        width: 100%;
+        left: -100%;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .health-grid, .attributes-grid, .derived-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sheet-footer {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .sheet-footer .action-btn {
+        width: 100%;
+        margin: 2px 0;
+    }
+}
+
+/* Dados */
+.dice-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.dice-btn {
+    background: linear-gradient(145deg, #1d3557, #457b9d);
+    color: white;
+    transition: transform 0.2s;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.dice-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* Prueba de habilidad */
+.skill-check {
+    background-color: rgba(29, 53, 87, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.skill-check h3 {
+    margin-top: 0;
+    color: var(--cthulhu-green);
+}
+
+.skill-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.skill-input select {
+    flex-grow: 1;
+    padding: 8px;
+    background-color: #333;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 4px;
+}
+
+/* Resultados */
+.result-box {
+    background-color: rgba(29, 53, 87, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.result-box p {
+    margin: 0;
+    font-size: 18px;
+}
+
+.dice-icon {
+    font-size: 50px;
+    margin-top: 15px;
+    color: var(--cthulhu-green);
+}
+
+/* Historial */
+.history {
+    background-color: rgba(29, 53, 87, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.history h3 {
+    margin-top: 0;
+    color: var(--cthulhu-green);
+}
+
+.history ul {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.history li {
+    padding: 5px 0;
+    border-bottom: 1px solid #444;
+}
+
+/* Resultados */
+.result-text {
+    margin-top: 10px;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.critical-hit {
+    color: var(--cthulhu-green);
+    animation: pulse 1s infinite;
+    background-color: rgba(42, 157, 143, 0.2);
+}
+
+.critical-fail {
+    color: var(--cthulhu-red);
+    animation: pulse 1s infinite;
+    background-color: rgba(230, 57, 70, 0.2);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Nombre de archivo importado */
+.file-name {
+    font-size: 12px;
+    color: var(--cthulhu-green);
+    margin-left: 10px;
+    font-style: italic;
+}

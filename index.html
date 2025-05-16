@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Llamada de Cthulhu 7ª Ed.</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="cthulhu-icon.png" type="image/png">
+</head>
+<body class="dark-mode">
+    <!-- Botón ficha -->
+    <button id="toggleSheet" class="sheet-toggle">
+        <i class="fas fa-scroll"></i> Fichas 7ª Ed.
+    </button>
+
+    <!-- Ficha de personaje -->
+    <div id="characterSheet" class="character-sheet">
+        <div class="sheet-header">
+            <h2><i class="fas fa-user"></i> INVESTIGADOR DE CTHULHU 7ª </h2>
+            <button id="closeSheet" class="close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <!-- Pestañas principales -->
+        <div class="sheet-tabs">
+            <button class="tab-btn active" data-tab="basic"><i class="fas fa-id-card"></i> Básico</button>
+            <button class="tab-btn" data-tab="stats"><i class="fas fa-chart-line"></i> Atributos</button>
+            <button class="tab-btn" data-tab="skills"><i class="fas fa-list-check"></i> Habilidades</button>
+            <button class="tab-btn" data-tab="combat"><i class="fas fa-swords"></i> Combate</button>
+        </div>
+
+        <!-- Contenido de pestañas -->
+        <div class="tab-content active" id="basicTab">
+            <div class="form-section">
+                <h3><i class="fas fa-info-circle"></i> Información Personal</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="charName"><i class="fas fa-signature"></i> Nombre:</label>
+                        <input type="text" id="charName" placeholder="Nombre del investigador">
+                    </div>
+                    <div class="form-group">
+                        <label for="charOccupation"><i class="fas fa-briefcase"></i> Ocupación:</label>
+                        <input type="text" id="charOccupation" placeholder="Profesión">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="charAge"><i class="fas fa-birthday-cake"></i> Edad:</label>
+                        <input type="number" id="charAge" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="charGender"><i class="fas fa-venus-mars"></i> Género:</label>
+                        <input type="text" id="charGender" placeholder="Género">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3><i class="fas fa-heart-pulse"></i> Salud Mental y Física</h3>
+                <div class="health-grid">
+                    <div class="health-stat">
+                        <label>Cordura</label>
+                        <div class="stat-value">
+                            <input type="number" id="sanityValue" value="50" min="0">
+                            <span>/ <span id="sanityMax">99</span></span>
+                        </div>
+                    </div>
+                    <div class="health-stat">
+                        <label>Puntos de Vida</label>
+                        <div class="stat-value">
+                            <input type="number" id="hpValue" value="10" min="0">
+                            <span>/ <span id="hpMax">20</span></span>
+                        </div>
+                    </div>
+                    <div class="health-stat">
+                        <label>Puntos de Magia</label>
+                        <div class="stat-value">
+                            <input type="number" id="mpValue" value="10" min="0">
+                            <span>/ <span id="mpMax">25</span></span>
+                        </div>
+                    </div>
+                    <div class="health-stat">
+                        <label>Suerte</label>
+                        <div class="stat-value">
+                            <input type="number" id="luckValue" value="50" min="0" max="99">
+                            <span>%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="statsTab">
+            <div class="attributes-grid">
+                <div class="attribute-card">
+                    <label>Fuerza (STR)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="strValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="attribute-card">
+                    <label>Constitución (CON)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="conValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="attribute-card">
+                    <label>Tamaño (SIZ)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="sizValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="attribute-card">
+                    <label>Destreza (DEX)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="dexValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="attribute-card">
+                    <label>Apariencia (APP)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="appValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="attribute-card">
+                    <label>Inteligencia (INT)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="intValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="attribute-card">
+                    <label>Poder (POW)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="powValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="attribute-card">
+                    <label>Educación (EDU)</label>
+                    <div class="attribute-value">
+                        <input type="number" id="eduValue" value="50">
+                        <span>%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="derived-stats">
+                <h3><i class="fas fa-calculator"></i> Estadísticas Derivadas</h3>
+                <div class="derived-grid">
+                    <div class="derived-stat">
+                        <label>Daño Cuerpo a Cuerpo</label>
+                        <span id="dbValue">0</span>
+                    </div>
+                    <div class="derived-stat">
+                        <label>Movimiento</label>
+                        <span id="movementValue">7</span>
+                    </div>
+                    <div class="derived-stat">
+                        <label>Encuentros Míticos</label>
+                        <span id="mythosEncounters">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="skillsTab">
+            <div class="skills-section">
+                <div class="skills-filter">
+                    <select id="skillsFilter">
+                        <option value="all">Todas las habilidades</option>
+                        <option value="occupational">Ocupacionales</option>
+                        <option value="personal">Personales</option>
+                        <option value="combat">Combate</option>
+                        <option value="academic">Académicas</option>
+                    </select>
+                    <button id="addSkillBtn"><i class="fas fa-plus"></i> Añadir</button>
+                </div>
+                
+                <div class="skills-list" id="skillsList">
+                    <!-- Las habilidades se generarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="combatTab">
+            <div class="combat-section">
+                <h3><i class="fas fa-gun"></i> Armas</h3>
+                <div class="weapons-list" id="weaponsList">
+                    <div class="weapon-entry">
+                        <div class="weapon-info">
+                            <input type="text" placeholder="Nombre del arma" value="Pistola .32">
+                            <div class="weapon-stats">
+                                <div>
+                                    <label>Habilidad</label>
+                                    <input type="number" value="25">
+                                    <span>%</span>
+                                </div>
+                                <div>
+                                    <label>Daño</label>
+                                    <input type="text" value="1D10">
+                                </div>
+                                <div>
+                                    <label>Alcance</label>
+                                    <input type="text" value="15m">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <button id="addWeaponBtn" class="action-btn"><i class="fas fa-plus"></i> Añadir Arma</button>
+            </div>
+        </div>
+
+        <div class="sheet-footer">
+            <button id="saveSheet" class="action-btn"><i class="fas fa-save"></i> Guardar</button>
+            <button id="exportSheet" class="action-btn"><i class="fas fa-file-export"></i> Exportar</button>
+            <button id="importSheet" class="action-btn"><i class="fas fa-file-import"></i> Importar</button>
+        </div>
+    </div>
+
+    <!-- Contenedor principal de dados -->
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-dice-d20"></i> <span class="cthulhu-text">CALL OF CTHULHU 7ª ED.</span> <i class="fas fa-tentacle"></i></h1>
+            <button id="themeToggle"><i class="fas fa-moon"></i> Claro/Oscuro</button>
+        </div>
+        
+        <!-- Selector de dados -->
+        <div class="dice-selector">
+            <button onclick="rollDice(4)" class="dice-btn"><i class="fas fa-dice-d4"></i> D4</button>
+            <button onclick="rollDice(6)" class="dice-btn"><i class="fas fa-dice"></i> D6</button>
+            <button onclick="rollDice(8)" class="dice-btn"><i class="fas fa-dice-d8"></i> D8</button>
+            <button onclick="rollDice(10)" class="dice-btn"><i class="fas fa-dice-d10"></i> D10</button>
+            <button onclick="rollDice(12)" class="dice-btn"><i class="fas fa-dice-d12"></i> D12</button>
+            <button onclick="rollDice(20)" class="dice-btn"><i class="fas fa-dice-d20"></i> D20</button>
+            <button onclick="rollDice(100)" class="dice-btn"><i class="fas fa-percentage"></i> D100</button>
+        </div>
+
+        <!-- Prueba de habilidad -->
+        <div class="skill-check">
+            <h3><i class="fas fa-search"></i> Prueba de Habilidad</h3>
+            <div class="skill-input">
+                <select id="skillSelect">
+                    <option value="">Seleccionar habilidad...</option>
+                </select>
+                <span>%</span>
+                <button onclick="rollSkill()" class="action-btn"><i class="fas fa-dice"></i> Lanzar</button>
+            </div>
+            <p id="skillResult" class="result-text"></p>
+        </div>
+
+        <!-- Resultados -->
+        <div class="result-box animate__animated" id="resultBox">
+            <p id="diceResult"><i class="fas fa-dice"></i> Esperando tirada...</p>
+            <div class="dice-icon" id="diceIcon"><i class="fas fa-dice-d20"></i></div>
+        </div>
+
+        <!-- Historial -->
+        <div class="history">
+            <h3><i class="fas fa-history"></i> Historial</h3>
+            <ul id="historyList"></ul>
+            <button onclick="clearHistory()" class="action-btn"><i class="fas fa-trash"></i> Limpiar</button>
+        </div>
+    </div>
+
+    <!-- Input oculto para importar -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;">
+
+    <!-- Sonidos -->
+    <audio id="diceSound" src="dice-roll.mp3" preload="auto"></audio>
+    <audio id="successSound" src="success.mp3" preload="auto"></audio>
+    <audio id="failSound" src="fail.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
